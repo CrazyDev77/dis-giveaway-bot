@@ -1,12 +1,12 @@
 const Discord = require("discord.js");
 
 module.exports = {
-  description: "End a giveaway",
+  description: "Pause a giveaway",
 
   options: [
     {
       name: "giveaway",
-      description: "The giveaway to end (message ID or giveaway prize)",
+      description: "The giveaway to pause (message ID or giveaway prize)",
       type: Discord.ApplicationCommandOptionType.String,
       required: true,
     },
@@ -20,7 +20,7 @@ module.exports = {
     ) {
       return interaction.reply({
         content:
-          ":x: You need to have the manage messages permissions to end giveaways.",
+          ":x: You need to have the manage messages permissions to pause giveaways.",
         ephemeral: true,
       });
     }
@@ -46,20 +46,20 @@ module.exports = {
       });
     }
 
-    if (giveaway.ended) {
+    if (giveaway.pauseOptions.isPaused) {
       return interaction.reply({
-        content: "This giveaway is already ended.",
+        content: "This giveaway is already paused.",
         ephemeral: true,
       });
     }
 
     // Edit the giveaway
     client.giveawaysManager
-      .end(giveaway.messageId)
+      .pause(giveaway.messageId)
       // Success message
       .then(() => {
         // Success message
-        interaction.reply("Giveaway ended!");
+        interaction.reply("Giveaway paused!");
       })
       .catch((e) => {
         interaction.reply({
